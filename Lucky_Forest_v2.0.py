@@ -1,4 +1,4 @@
-﻿# Vasya Ko
+﻿
 import pygame,os,numpy
 import random
 sizen = 64
