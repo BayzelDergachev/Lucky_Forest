@@ -45,7 +45,6 @@ Himg = si(img_folder,'Heart',sizen,sizen)
 Himg2 = si(img_folder,'Heart2',sizen,sizen)
 Himg3 = si(img_folder,'Heart3',sizen,sizen)
 
-Menimg = si(img_folder,'Menu',WIDTH,HEIGHT + 1)
 
 Kimg = si(img_folder,'Knife',sizen//2,sizen//2)
 
