@@ -3,7 +3,7 @@ import pygame,os,numpy
 import random
 sizen = 64
 WIDTH = sizen*20
-HEIGHT = int(sizen*11.25) 
+HEIGHT = int(sizen*11) 
 FPS = 75
 
 # Создаем игру и окно
@@ -12,7 +12,49 @@ RED = ((255,0,0))
 pygame.init()
 pygame.mixer.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Lucky Forest v2.0")
+ran = random.randint(0,20)
+nameboard  = "Lucky Forest v2.0"
+if ran == 1:
+    nameboard  = "Lucky Forest v2.0 :)"
+elif ran == 2:
+    nameboard  = "Lucky Forest v2.0 ;)"
+elif ran == 3:
+    nameboard  = "Lucky Forest v2.0 Nice to meet you!"
+elif ran == 4:
+    nameboard  = "Lucky Forest v2.0 :0"
+elif ran == 5:
+    nameboard  = "Lucky Forest v2.0 :]"
+elif ran == 6:
+    nameboard  = "Lucky Forest v2.0 >:}"
+elif ran == 7:
+    nameboard  = "Lucky Forest v2.0 ;/ - Eror:Failed to load!"
+elif ran == 8:
+    nameboard  = "Lucky Forest v2.0 Nhe-he-he-he"
+elif ran == 9:
+    nameboard  = "Lucky Forest v2.0 made by Super Man"
+elif ran == 10:
+    nameboard  = "Lucky Forest v2.0 made in China"
+elif ran == 11:
+    nameboard  = "Lucky Forest v2.0 ABOBA"
+elif ran == 12:
+    nameboard  = "0.2v tseroF ykcuL"
+elif ran == 13:
+    nameboard  = "Do you want tea?"
+elif ran == 14:
+    nameboard  = "lUcKy fOrEsT V2.0"
+elif ran == 15:
+    nameboard  = "UnLucky Forest v2.0 "
+elif ran == 16:
+    nameboard  = "Lucky Forest v2.077"
+elif ran == 17:
+    nameboard  = "Hi!"
+elif ran == 18:
+    nameboard  = "pin-code 2374"
+elif ran == 19:
+    nameboard  = "BABY SHARK!"
+elif ran == 20:
+    nameboard  = "Lucky Forest v2.0"
+pygame.display.set_caption(nameboard)
 game_folder = os.path.dirname(__file__)
 img_folder = os.path.join(game_folder, 'img')
 
@@ -107,7 +149,7 @@ class Particle(pygame.sprite.Sprite):
         else:
             self.rect.centery += self.move_y
         if self.tim >= self.tim_life:
-            pargr.remove(self)
+            Pargr.remove(self)
         
 class Lives(pygame.sprite.Sprite):
     def __init__(self,n):
@@ -203,6 +245,17 @@ class Knife(pygame.sprite.Sprite):
                     self.image.set_colorkey((0,0,0))
         else:
             self.vel -= 1.0
+            for skele in Enem:
+                if self.rect.colliderect(skele):
+                    if skele.restart_hp <= 0:
+                        skele.restart_hp = 35
+                        skele.hp -= random.randint(1,random.randint(1,random.randint(1,3))) * 5
+                        for y in range(random.randint(5,11)):
+                            par = Particle(7,7,skele.rect.centerx + random.randint(-16,16),skele.rect.centery + random.randint(-16,16),(215,215,215),-5.5 + random.randint(-16,0),1024,0,1 + random.randint(0,5),False,255 + random.randint(-16,16))
+                            Pargr.add(par)
+                        if skele.hp <= 0:    
+                            Enem.remove(skele)
+
 
 class SLoi(pygame.sprite.Sprite):
     def __init__(self):
@@ -252,15 +305,15 @@ class SLoi(pygame.sprite.Sprite):
                             else:
                                 tyy = tree2img
                             room = Room([u,j],tyy )
-                            und.add(room)
+                            Und.add(room)
                         if self.pole[u][j] == '1':
                             if random.randint(0,25) == 0 and ((u < 15 or u > 17) or (j < 15 or j > 17)):
                                 skel = Skelet([u,j])
-                                enem.add(skel)
+                                Enem.add(skel)
                             
                             room = Room([u,j],grassimg )
-                            und.add(room)
-                und.remove(self)
+                            Und.add(room)
+                Und.remove(self)
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -282,7 +335,7 @@ class Player(pygame.sprite.Sprite):
 
         self.retime -= 1
         if self.retime <= 0:
-            for roo in und:
+            for roo in Und:
                 if (roo != s) and (roo.index == 0):
                     rp1 = roo.rect.centerx
                     mp1 = self.rect.centerx
@@ -358,12 +411,14 @@ class Skelet(pygame.sprite.Sprite):
         self.img = Skeletimg
         self.image.set_colorkey(WHITE)
         self.retime = 0
+        self.restart_hp = 10
+        self.hp = 20
 
         
         
         
     def update(self):
-        
+        self.restart_hp -= 1
         upper = False
         leftper = False
         downper = False
@@ -373,7 +428,7 @@ class Skelet(pygame.sprite.Sprite):
         if self.retime <= 0:
             
                 
-            for roo in und:
+            for roo in Und:
                 if (roo != s) and (roo.index == 0):
                     
                     rp2 = roo.possi[1]- sett.yc
@@ -407,27 +462,28 @@ class Skelet(pygame.sprite.Sprite):
                     self.possi2 = (self.possi2[0],self.possi2[1]+sizen)
                     
                     self.retime = 35
-                    self.image = Skelanim[2]
+                    self.image = Skelanim[2].copy()
                     break
                 elif  (downper) and (r == 2) :
                     self.possi2 = (self.possi2[0],self.possi2[1]-sizen)   
                     
                     self.retime = 35
-                    self.image = Skelanim[3]
+                    self.image = Skelanim[3].copy()
                     break
                 elif  (rightper) and (r == 3) :
                     self.possi2 = (self.possi2[0]+sizen,self.possi2[1])   
                     
                     self.retime = 35
-                    self.image = Skelanim[1]
+                    self.image = Skelanim[1].copy()
                     break
                 elif  (leftper) and (r == 4):
                     self.possi2 = (self.possi2[0]-sizen,self.possi2[1])      
                     
                     self.retime = 35
-                    self.image = Skelanim[0]
+                    self.image = Skelanim[0].copy()
                     break
         self.image.set_colorkey(WHITE)
+        self.image.set_alpha(255 - self.restart_hp*2)
         self.rect = self.image.get_rect()
         self.possi = ((self.possi[0] + (self.possi2[0] - self.possi[0])/4),self.possi[1])
         self.possi = (self.possi[0],(self.possi[1] + (self.possi2[1] - self.possi[1])/4))  
@@ -453,7 +509,14 @@ class Room(pygame.sprite.Sprite):
         
     def update(self):
 
-        self.rect.center = (self.possi[0] - sett.x, self.possi[1]- sett.y)
+        
+        if (self.possi[0] - sett.x < -sizen) or (self.possi[0] - sett.x > WIDTH + sizen) or (self.possi[1] - sett.y < -sizen) or (self.possi[1] - sett.y > HEIGHT + sizen):
+            self.image = ni_img
+        else: 
+            self.image = self.img
+        self.rect = self.image.get_rect()
+        self.rect.center = (self.possi[0] - sett.x, self.possi[1]- sett.y )
+        
 class Settings():
     def __init__(self):
         self.x = 5 * sizen
@@ -466,22 +529,22 @@ class Settings():
         self.Game_Started = True
         self.retaim = 0
 clock = pygame.time.Clock()
-und = pygame.sprite.Group()
-enem = pygame.sprite.Group()
+Und = pygame.sprite.Group()
+Enem = pygame.sprite.Group()
 UI = pygame.sprite.Group()
-pargr = pygame.sprite.Group()
+Pargr = pygame.sprite.Group()
 sett = Settings()
-obj = pygame.sprite.Group()
+Obj = pygame.sprite.Group()
 for i in range(1):
     s = SLoi()
-    und.add(s)
+    Und.add(s)
 for i in range(5):
     h = Lives(i)
     UI.add(h)
 
 p = Player()
 k = Knife()
-obj.add(k,p)
+Obj.add(k,p)
 ru = True
 
 g = False
@@ -491,7 +554,7 @@ while ru:
         
         sett.risk = 0
         distancesk = 9999999
-        for sk in enem:
+        for sk in Enem:
             if (abs(p.rect.centerx - sk.rect.centerx) + abs(p.rect.centery - sk.rect.centery))//sizen < distancesk:
                 distancesk = (abs(p.rect.centerx - sk.rect.centerx) + abs(p.rect.centery - sk.rect.centery))//sizen
         if distancesk <= 10:
@@ -502,7 +565,7 @@ while ru:
                 for y in range(random.randint(3,11)):
                     par = Particle(2,2,WIDTH/2 + random.randint(-sizen//2,sizen//2),
                     HEIGHT/2 + random.randint(-sizen//2,sizen//2),(192 + random.randint(-16,16),0,0),-3,500,random.randint(-5,5),0,True,255)
-                    pargr.add(par)
+                    Pargr.add(par)
         if sett.hp <= 0 and not(g):
             g = True
             #trim = 150
@@ -517,7 +580,7 @@ while ru:
             for y in range(random.randint(3,11)):
                 par = Particle(2,2,WIDTH/2 + random.randint(-sizen//2,sizen//2),
                 HEIGHT/2 + random.randint(-sizen//2,sizen//2),(192 + random.randint(-16,16),0,0),-3,500,random.randint(-5,5),0,True,255)
-                pargr.add(par)
+                Pargr.add(par)
         '''t = False'''
         clock.tick(FPS)
         for event in pygame.event.get():
@@ -549,18 +612,18 @@ while ru:
                 sett.move[3]= False
              
         if sett.Game_Started:
-            und.update()    
-            enem.update()   
-            obj.update()  
-            pargr.update()
+            Und.update()    
+            Enem.update()   
+            Obj.update()  
+            Pargr.update()
             UI.update()  
         screen.fill((0,0,0))
         if sett.Game_Started:
             screen.fill((0,210,0))
-            und.draw(screen)
-            enem.draw(screen)
-            obj.draw(screen)
-            pargr.draw(screen)
+            Und.draw(screen)
+            Enem.draw(screen)
+            Obj.draw(screen)
+            Pargr.draw(screen)
             UI.draw(screen)
         
         # После отрисовки всего, переворачиваем экран
