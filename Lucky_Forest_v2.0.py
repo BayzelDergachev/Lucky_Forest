@@ -2,8 +2,8 @@
 import pygame,os,numpy
 import random
 sizen = 64
-WIDTH = sizen*16
-HEIGHT = int(sizen*11.9999) 
+WIDTH = sizen*20
+HEIGHT = int(sizen*11.25) 
 FPS = 75
 
 # Создаем игру и окно
@@ -12,7 +12,7 @@ RED = ((255,0,0))
 pygame.init()
 pygame.mixer.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Lucky Forest v1.0")
+pygame.display.set_caption("Lucky Forest v2.0")
 game_folder = os.path.dirname(__file__)
 img_folder = os.path.join(game_folder, 'img')
 
@@ -182,7 +182,7 @@ class Knife(pygame.sprite.Sprite):
 
                 mouse_x, mouse_y = pygame.mouse.get_pos()
                 xc, yc = self.rect.center
-                self.angle = -rotate(xc, yc, mouse_x, mouse_y)
+                self.angle = -rotate(xc, yc, mouse_x, mouse_y) 
                 abool = ((self.angle >= 135 or self.angle <= -135) and p.see == 0)
                 bbool = ((self.angle >= 45 and self.angle <= 135) and p.see == 1)
                 cbool = ((self.angle >= -45 and self.angle <= 45) and p.see == 2)
@@ -203,6 +203,7 @@ class Knife(pygame.sprite.Sprite):
                     self.image.set_colorkey((0,0,0))
         else:
             self.vel -= 1.0
+
 class SLoi(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
